@@ -103,6 +103,16 @@ func (p *ThetaLakeProvider) DataSources(ctx context.Context) []func() datasource
 		NewAnalysisPoliciesDataSource,
 		NewSystemStatusDataSource,
 		NewAnalysisPolicyHitsDataSource,
+		NewAnalysisDataSource,
+		NewCaseDataSource,
+		NewUserDataSource,
+		NewDirectoryGroupDataSource,
+		NewTagDataSource,
+		NewRetentionPolicyDataSource,
+		NewLegalHoldDataSource,
+		NewExportDataSource,
+		NewRecordDataSource,
+		NewIntegrationStateDataSource,
 	}
 }
 

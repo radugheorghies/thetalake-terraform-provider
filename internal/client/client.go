@@ -1421,3 +1421,44 @@ func (c *Client) UpdateCaseStatus(caseID string, status string) error {
 
 	return nil
 }
+
+// Analysis represents a Theta Lake Analysis result.
+type Analysis struct {
+	ID        string `json:"id"`
+	Name      string `json:"name"`
+	Status    string `json:"status"`
+	CreatedAt string `json:"created_at"`
+	UpdatedAt string `json:"updated_at"`
+	Details   string `json:"details,omitempty"`
+}
+
+// GetAnalysis retrieves an analysis by ID.
+func (c *Client) GetAnalysis(analysisID string) (*Analysis, error) {
+	req, err := http.NewRequest("GET", fmt.Sprintf("%s/analysis/%s", c.Endpoint, analysisID), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	res, err := c.DoRequest(req)
+	if err != nil {
+		return nil, err
+	}
+	defer res.Body.Close()
+
+	if res.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("status: %d, body: %s", res.StatusCode, "error reading body")
+	}
+
+	body, err := io.ReadAll(res.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	var analysis Analysis
+	err = json.Unmarshal(body, &analysis)
+	if err != nil {
+		return nil, err
+	}
+
+	return &analysis, nil
+}
